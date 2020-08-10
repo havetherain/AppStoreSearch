@@ -9,34 +9,35 @@
 import UIKit
 
 class SearchVC: UIViewController {
-    @IBOutlet weak var recentSearchWordTableView: UITableView!
+    @IBOutlet weak var searchResultTableView: UITableView!
+
+    let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "App Store"
+        return searchController
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTableViewAttributes()
-        setupSearchBar()
+        setupSearchControllerAtNav()
     }
 
-    private func setupTableViewAttributes() {
-        recentSearchWordTableView.delegate = self
-        recentSearchWordTableView.dataSource = self
-    }
+    private func setupSearchControllerAtNav() {
+        searchController.searchBar.delegate = self
 
-    private func setupSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 
-extension SearchVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+extension SearchVC: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecentSearchWordCell") as! RecentSearchWordCell
-        return cell
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
     }
 }
